@@ -3,10 +3,10 @@
     require_once __DIR__.'/../vendor/autoload.php';
     require_once __DIR__.'/../src/Task.php';
 
-    session_start();
-    if (empty($_SESSION['list_of_tasks'])) {
-        $_SESSION['list_of_tasks'] = array();
-    }
+    $server = 'mysql:host=localhost;dbname=to_do';
+    $username = 'root';
+    $password = 'root';
+    $DB = new PDO($server, $username, $password);
 
     $app = new Silex\Application();
 
@@ -15,9 +15,7 @@
     ));
 
     $app->get("/", function() use ($app) {
-
         return $app['twig']->render('tasks.html.twig', array('tasks' => Task::getAll()));
-
     });
 
     $app->post("/tasks", function() use ($app) {
